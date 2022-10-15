@@ -1,0 +1,6 @@
+INSERT INTO TipoImpacto(nome, descricao) VALUES('Poluição Atmosférica', 'Contaminação do ar por partículas sólidas, líquidas e gasosas, que podem ser produzidas artificialmente, através das atividades humanas, ou de fontes naturais');
+INSERT INTO TipoImpacto(nome, descricao) VALUES('Poluição da Água', 'Contaminação dos recursos hídricos através de elementos biológicos, físicos e químicos que causam danos e são extremamente prejudiciais aos seres vivos, afetando diretamente os fluviais, a fauna e a flora');
+INSERT INTO TipoImpacto(nome, descricao) VALUES('Poluição Térmica', 'Aumento ou diminuição da temperatura das águas naturais, causando impacto direto nos seres vivos desse ecossistema. A principal causa é a refrigeração ou aquecimento de usinas nucleares, centrais elétricas e grandes fábricas, que acabam por liberar vapores e/ou efluentes a altas temperaturas');
+INSERT INTO TipoImpacto(nome, descricao) VALUES('Poluição do Solo e Subsolo', 'Ocorre pelo contato de resíduos sólidos, líquidos, efluentes e produtos químicos e poluentes com a superfície do solo, podendo penetrar no mesmo e atingir, inclusive, o subsolo e lençol freático');
+INSERT INTO TipoImpacto(nome, descricao) VALUES('Poluição Luminosa', 'Se dá pela grande quantidade de luz artificial que é projetada pelas cidades e irradia áreas de maneira inapropriada');
+
