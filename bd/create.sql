@@ -23,7 +23,7 @@ CREATE TABLE TipoEnergia (
 CREATE TABLE TipoRegiao (
 	ID int NOT NULL AUTO_INCREMENT,
 	NOME varchar(30) NOT NULL,
-	PLURAL varchar(10) NOT NULL,
+	PLURAL varchar(30) NOT NULL,
 	CONSTRAINT PK_TipoRegiao PRIMARY KEY (ID)
 );
 
