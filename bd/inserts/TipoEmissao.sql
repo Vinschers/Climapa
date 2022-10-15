@@ -1,0 +1,7 @@
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('CO₂', 'Gás Carbônico: Proveniente da queima de combustíveis fósseis, queimadas e desmatamentos', 1);
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('CH₄', 'Gás Metano: Componente primário do gás natural, também produzido por bactérias no aparelho digestivo do gado, aterros sanitários, plantações inundadas, mineração e queima de biomassa', 10.435483871);
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('N₂O', 'Óxido Nitroso: Liberado por microorganismos no solo (por um processo denominado nitrificação, que libera igualmente nitrogênio)', 196.129032258);
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('CHF₃', 'Trifluorometano: Formado na baixa atmosfera, sob estímulo do sol, a partir de óxidos de nitrogênio (NOx) e hidrocarbonetos produzidos em usinas termoelétricas, pelos veículos, pelo uso de solventes e pelas queimadas', 10083.870967742);
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('CH₂F₂', 'Difluorometano: Emitido em alguns processos industriais e também na durante a produção de refrigeradores, ar-condicionados e espuma para preenchimento de estofados', 333.870967742);
+INSERT INTO TipoEmissao(nome, descricao, nocividade) VALUES('SF₆', 'Hexafluorido de Enxofre: Amplamente utilizado em equipamentos elétricos de alta tensão pela sua alta capacidade de isolmaneot elétrico. Contribui para o efeito estufa por ser altamente reflexiva', 32525.806451613);
+
