@@ -1,0 +1,5 @@
+INSERT INTO TipoRegiao 	VALUES('Continente', 'Continentes')
+INSERT INTO TipoRegiao 	VALUES('Sub-Continente', 'Sub-Continentes')
+INSERT INTO TipoRegiao 	VALUES('País', 'Países')
+INSERT INTO TipoRegiao 	VALUES('Região', 'Regiões')
+INSERT INTO TipoRegiao 	VALUES('Estado', 'Estados')
