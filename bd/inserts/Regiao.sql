@@ -1,0 +1,22 @@
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('América', 42215000, 1, null, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ásia', 44482000, 1, null, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Europa', 10360000, 1, null, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Oceania', 8480000, 1, null, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('África', 30230000, 1, null, 'a');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Europa Meridional', 1294920, 2, );
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ásia Ocidental', 18253927, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ásia Meridional', 6400127, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('América Latina e Caribe', 20139378, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('África Subsaariana', 24211111, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Europa Ocidental', 1084793, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Austrália e Nova Zelândia', 7945610, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Europa Oriental', 6277869, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Sudeste da Ásia', 4340700, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ásia Oriental', 11560456, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Europa Setentrional', 1702418, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('África Setentrional', 6018889, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Melanésia', 529590, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Micronésia', 3170, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ásia Central', 3926790, 2);
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Polinésia', 8090, 2, );
