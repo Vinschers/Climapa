@@ -222,3 +222,41 @@ INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES 
 INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('África do Sul', 1219090, 4, 28, 'a');
 INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Zâmbia', 752618, 4, 27, 'a');
 INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Zimbábue', 390757, 4, 27, 'o');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Norte', 3853677, 5, 51, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Nordeste', 1544291, 5, 51, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Centro-Oeste', 1606403, 5, 51, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Sudeste', 924620, 5, 51, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Sul', 576774, 5, 51, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Distrito Federal', 5761, 5, 51, 'o');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Acre', 164123, 6, 222, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Amapá', 142470, 6, 222, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Amazonas', 1559167, 6, 222, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Pará', 1245871, 6, 222, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Rondônia', 237765, 6, 222, '');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Roraima', 223645, 6, 222, '');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Tocantins', 277466, 6, 222, 'o');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Alagoas', 27843, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Bahia', 564760, 6, 223, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Ceará', 148894, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Maranhão', 329642, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Paraíba', 56467, 6, 223, 'a');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Pernambuco', 98067, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Piauí', 251757, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Rio Grande do Norte', 52810, 6, 223, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Sergipe', 21925, 6, 223, '');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Goiás', 340203, 6, 224, '');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Mato Grosso', 903207, 6, 224, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Mato Grosso do Sul', 357145, 6, 224, 'o');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Espírito Santo', 46074, 6, 225, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Minas Gerais', 586521, 6, 225, '');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Rio de Janeiro', 43750, 6, 225, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('São Paulo', 248219, 6, 225, '');
+
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Paraná', 199299, 6, 226, 'o');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Santa Catarina', 95731, 6, 226, '');
+INSERT INTO Regiao(nome, tamanho, id_tipo_regiao, id_regiao_pai, artigo) VALUES ('Rio Grande do Sul', 281707, 6, 226, 'o');
