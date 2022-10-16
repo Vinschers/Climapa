@@ -175,7 +175,7 @@ FROM Impacto
 INNER JOIN Regiao ON Impacto.ID_REGIAO = Regiao.ID
 inner JOIN TipoImpacto on Impacto.ID_TIPO_IMPACTO = TipoImpacto.ID
 group by Regiao.NOME, TipoImpacto.NOME
-having Regiao.ID in (50, 55) and TipoImpacto.ID = 3;
+having Regiao.ID in (50, 55) and TipoImpacto.ID IN (3, 4);
 
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,8 +228,8 @@ SELECT Regiao.ID as "ID Região", Regiao.NOME as "Região", TipoEmissao.ID, Tipo
 FROM Emissao
 INNER JOIN Regiao ON Emissao.ID_REGIAO = Regiao.ID
 inner JOIN TipoEmissao on Emissao.ID_TIPO_EMISSAO = TipoEmissao.ID
-group by Regiao.NOME
-having Regiao.ID in (51, 155) and TipoEmissao.ID = 2;
+group by Regiao.NOME, TipoEmissao.ID
+having Regiao.ID in (51, 155) and TipoEmissao.ID IN (2, 3);
 
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -283,7 +283,7 @@ FROM MatrizEnergetica
 INNER JOIN Regiao ON MatrizEnergetica.ID_REGIAO = Regiao.ID
 inner JOIN TipoEnergia on MatrizEnergetica.ID_TIPO_ENERGIA = TipoEnergia.ID
 group by Regiao.NOME, TipoEnergia.ID
-having Regiao.ID in (150, 155) and TipoEnergia.ID = 2;
+having Regiao.ID in (150, 155) and TipoEnergia.ID IN (2, 4);
 
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
