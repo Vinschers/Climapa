@@ -20,5 +20,5 @@ for i in range(n):
     valor = r.randint(0, 1000)
     id_tipo_emissao = r.randint(1, 6)
     print(
-        f"INSERT INTO Emissao(id_regiao, mes, ano, emitido, id_tipo_emissao) VALUES('{id_regiao}','{mes}','{ano}', '{valor}','{id_tipo_emissao}');"
+        f"INSERT INTO Emissao(id_regiao, mes, ano, emitido, id_tipo_emissao) VALUES('{id_regiao}','{mes}','{ano}', {valor},'{id_tipo_emissao}');"
     )
