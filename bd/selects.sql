@@ -6,6 +6,9 @@ INNER JOIN TipoRegiao ON TipoRegiao.ID = Regiao.ID_TIPO_REGIAO
 WHERE Regiao.nome = "Brasil";
 
 
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 -- Seleciona o histórico da população baseado nos ids das regiões
 SELECT Regiao.ID as "ID região", Regiao.nome as "Nome", Populacao.MES as "Mês", Populacao.ANO as "Ano", Populacao.QTD_PESSOAS as "Habitantes", Populacao.QTD_NASCIMENTOS as "Nascimentos",
 Populacao.QTD_MORTES as "Óbitos"
@@ -42,6 +45,9 @@ FROM Populacao
 INNER JOIN Regiao On Populacao.ID_REGIAO = Regiao.ID
 GROUP BY Regiao.ID, Populacao.MES
 HAVING Regiao.ID IN (51, 67) and Populacao.MES BETWEEN 4 AND 8;
+
+
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 -- Seleciona as informações sobre o clima de várias regiões, baseado em seus IDs
@@ -82,6 +88,9 @@ FROM Clima
 INNER JOIN Regiao ON Clima.ID_REGIAO = Regiao.ID
 GROUP BY Regiao.ID, Clima.MES
 HAVING Regiao.ID IN (51, 66) and Clima.MES between 4 and 9;
+
+
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 -- Seleciona os dados de vegetação, baseado nos ids de várias regiões
@@ -125,6 +134,9 @@ FROM Vegetacao
 INNER JOIN Regiao ON Vegetacao.ID_REGIAO = Regiao.ID
 GROUP BY Regiao.ID, Vegetacao.MES
 HAVING Regiao.ID IN (40, 51) and Vegetacao.MES IN (4, 5, 6);
+
+
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 -- Seleciona os dados de impacto, baseado nos ids de várias regiões
