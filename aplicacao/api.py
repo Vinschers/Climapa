@@ -22,7 +22,7 @@ def run_sql(sql: str) -> list[tuple]:
     cursor.execute(sql)
     resp = cursor.fetchall()
 
-    cursor.stop()
+    cursor.close()
 
     return resp
 
@@ -33,9 +33,5 @@ def create_fields(resp: list[tuple], *keys) -> list[dict]:
 
 @db_profile.route("/teste", methods=["GET"])
 def teste():
-    cursor = db.cursor()
-
-    cursor.execute("SELECT * FROM Regiao")
-    regioes = cursor.fetchall()
-
+    regioes = run_sql("SELECT * FROM Regiao")
     return create_fields(regioes, "id", "nome", "tamanho", "tipo_regiao", "regiao_pai", "artigo")
