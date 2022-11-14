@@ -59,49 +59,95 @@ def regiao():
         return "Por favor, especifique um id ou um nome da região na URL."
 
 
-@db_profile.route("/populacao", methods=["GET"])
-def populacao():
-    args = request.args
+def get_regions_information(kwargs):
+    restricao = ""
 
-    if "regioes" not in args:
-        return "Por favor, especifique as regiões de interesse separadas por vírgulas."
+    if "regioes" in kwargs:
+        restricao = f'Regiao.ID IN ({kwargs["regioes"]})'
 
-    restricao = f'Regiao.ID IN ({args["regioes"]})'
+    if "anos" in kwargs:
+        anos = kwargs["anos"].split(",")
+        restricao, erro = create_time_restriction(restricao, anos, "anos", f"{kwargs['tabela']}.ANO")
 
-    if "anos" not in args and "meses" not in args:
-        return "Por favor, especifique o período de tempo de interesse como um intervalo de anos, meses ou ambos."
+        if erro:
+            return erro
 
-    erro = ""
-    if "anos" in args:
-        anos = args["anos"].split(",")
-        restricao, erro = create_time_restriction(restricao, anos, "anos", "Populacao.ANO")
+    if "meses" in kwargs:
+        meses = kwargs["meses"].split(",")
+        restricao, erro = create_time_restriction(restricao, meses, "meses", f"{kwargs['tabela']}.MES")
 
-    if "meses" in args:
-        meses = args["meses"].split(",")
-        restricao, erro = create_time_restriction(restricao, meses, "meses", "Populacao.MES")
-
-    if erro:
-        return erro
+        if erro:
+            return erro
 
     campos = ["id", "nome"]
 
-    if "media" in args:
-        if args["media"] == "ano" and "meses" not in args:
-            campo_grupo = "Populacao.ANO"
+    if "media" in kwargs:
+        if kwargs["media"] == "ano" and "meses" not in kwargs:
+            campo_grupo = f"{kwargs['tabela']}.ANO"
             campos.append("ano")
-        elif args["media"] == "mes" and "anos" not in args:
-            campo_grupo = "Populacao.MES"
+        elif kwargs["media"] == "mes" and "anos" not in kwargs:
+            campo_grupo = f"{kwargs['tabela']}.MES"
             campos.append("mes")
         else:
             return "Por favor, escolha uma media valida (ano ou mes) e apenas uma das condições de tempo (ano ou mes)."
 
-        sql = f"SELECT Regiao.ID, Regiao.nome, {campo_grupo}, AVG(Populacao.QTD_PESSOAS), AVG(Populacao.QTD_NASCIMENTOS), AVG(Populacao.QTD_MORTES) FROM Populacao INNER JOIN Regiao On Populacao.ID_REGIAO = Regiao.ID GROUP BY Regiao.ID, {campo_grupo} HAVING"
-        campos.extend(["media_habitantes", "media_nascimentos", "media_obitos"])
+        group_colunas = ",".join(
+            [
+                f"AVG({kwargs['tabela']}.{coluna})" if len(kwargs["campos"][coluna]) == 1 else kwargs["campos"][coluna][2]
+                for coluna in kwargs["campos"].keys()
+            ]
+        )
+
+        sql = f"SELECT Regiao.ID, Regiao.nome, {campo_grupo}, {group_colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID GROUP BY Regiao.ID, {campo_grupo}"
+        tipo_restricao = "HAVING"
+        campos.extend([f"media_{kwargs['campos'][coluna][0]}" for coluna in kwargs["campos"]])
     else:
-        sql = "SELECT Regiao.ID, Regiao.nome, Populacao.MES, Populacao.ANO, Populacao.QTD_PESSOAS, Populacao.QTD_NASCIMENTOS, Populacao.QTD_MORTES FROM Populacao INNER JOIN Regiao On Populacao.ID_REGIAO = Regiao.ID WHERE"
-        campos.extend(["mes", "ano", "habitantes", "nascimentos", "obitos"])
+        colunas = ",".join(
+            [
+                f"{kwargs['tabela']}.{coluna}" if len(kwargs["campos"][coluna]) == 1 else kwargs["campos"][coluna][1]
+                for coluna in kwargs["campos"].keys()
+            ]
+        )
 
-    sql = f"{sql} {restricao};"
+        sql = f"SELECT Regiao.ID, Regiao.nome, {kwargs['tabela']}.MES, {kwargs['tabela']}.ANO, {colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID"
+        tipo_restricao = "WHERE"
+        campos.extend(["mes", "ano"])
+        campos.extend([f"{kwargs['campos'][coluna][0]}" for coluna in kwargs["campos"]])
 
-    populacao = run_sql(sql)
-    return create_fields(populacao, *campos)
+    if restricao:
+        sql += f" {tipo_restricao} {restricao}"
+
+    sql += ";"
+
+    print(sql)
+    info = run_sql(sql)
+    return create_fields(info, *campos)
+
+
+@db_profile.route("/populacao", methods=["GET"])
+def populacao():
+    info = {
+        "tabela": "Populacao",
+        "campos": {"QTD_PESSOAS": ["habitantes"], "QTD_NASCIMENTOS": ["nascimentos"], "QTD_MORTES": ["obitos"]},
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
+
+
+@db_profile.route("/clima", methods=["GET"])
+def clima():
+    info = {
+        "tabela": "Clima",
+        "campos": {
+            "TEMPERATURA_MEDIA": [
+                "temperatura_media",
+                "CONCAT(Clima.TEMPERATURA_MEDIA, ' °', Clima.UNIDADE_TEMPERATURA)",
+                "CONCAT(AVG(Clima.TEMPERATURA_MEDIA), ' °', MIN(Clima.UNIDADE_TEMPERATURA))",
+            ],
+            "INDICE_PLUVIOMETRICO": ["pluviosidade(mm)"],
+        },
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
