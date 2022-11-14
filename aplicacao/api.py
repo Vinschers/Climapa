@@ -81,6 +81,18 @@ def get_regions_information(kwargs):
 
     campos = ["id", "nome"]
 
+    join_tipo = ""
+    select_tipo = ""
+    group_tipo = ""
+    if 'tabela_tipo' in kwargs and kwargs['tabela_tipo']:
+        join_tipo = f"INNER JOIN Tipo{kwargs['tabela']} ON {kwargs['tabela']}.ID_TIPO_{kwargs['tabela'].upper()} = Tipo{kwargs['tabela']}.ID"
+        select_tipo = f"Tipo{kwargs['tabela']}.ID, MIN(Tipo{kwargs['tabela']}.NOME),"
+        group_tipo = f", Tipo{kwargs['tabela']}.ID"
+        campos.extend(["tipo", "nome_tipo"])
+
+        if "tipos" in kwargs:
+            restricao += f"Tipo{kwargs['tabela']}.ID IN ({kwargs['tipos']})"
+
     if "media" in kwargs:
         if kwargs["media"] == "ano" and "meses" not in kwargs:
             campo_grupo = f"{kwargs['tabela']}.ANO"
@@ -98,7 +110,7 @@ def get_regions_information(kwargs):
             ]
         )
 
-        sql = f"SELECT Regiao.ID, Regiao.nome, {campo_grupo}, {group_colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID GROUP BY Regiao.ID, {campo_grupo}"
+        sql = f"SELECT Regiao.ID, Regiao.nome, {select_tipo} {campo_grupo}, {group_colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID {join_tipo} GROUP BY Regiao.ID, {campo_grupo}{group_tipo}"
         tipo_restricao = "HAVING"
         campos.extend([f"media_{kwargs['campos'][coluna][0]}" for coluna in kwargs["campos"]])
     else:
@@ -109,7 +121,8 @@ def get_regions_information(kwargs):
             ]
         )
 
-        sql = f"SELECT Regiao.ID, Regiao.nome, {kwargs['tabela']}.MES, {kwargs['tabela']}.ANO, {colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID"
+        sql = f"SELECT Regiao.ID, Regiao.nome, {select_tipo} {kwargs['tabela']}.MES, {kwargs['tabela']}.ANO, {colunas} FROM {kwargs['tabela']} INNER JOIN Regiao On {kwargs['tabela']}.ID_REGIAO = Regiao.ID {join_tipo}"
+
         tipo_restricao = "WHERE"
         campos.extend(["mes", "ano"])
         campos.extend([f"{kwargs['campos'][coluna][0]}" for coluna in kwargs["campos"]])
@@ -147,6 +160,36 @@ def clima():
             ],
             "INDICE_PLUVIOMETRICO": ["pluviosidade(mm)"],
         },
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
+
+
+@db_profile.route("/vegetacao", methods=["GET"])
+def vegetacao():
+    info = {
+        "tabela": "Vegetacao",
+        "campos": {
+            "QTD_QUEIMADAS": ["area_queimadas(km2)"],
+            "INDICE_MATA_NATIVA": ["area_mata_nativa(km2)"],
+            "INDICE_REFLORESTAMENTO": ["area_reflorestamento(km2)"],
+            "INDICE_DESMATAMENTO": ["area_desmatada(km2)"],
+        },
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
+
+
+@db_profile.route("/impacto", methods=["GET"])
+def impacto():
+    info = {
+        "tabela": "Impacto",
+        "campos": {
+            "VALOR": ["valor"],
+        },
+        "tabela_tipo": True
     }
     info.update(request.args)
 
