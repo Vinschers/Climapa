@@ -1,11 +1,10 @@
-import json
 import os
 
 import mysql.connector as connector
 from dotenv import load_dotenv
 from flask import Blueprint, request
 
-db_profile = Blueprint("db_profile", __name__, url_prefix="/api")
+get_profile = Blueprint("get_profile", __name__, url_prefix="/get")
 
 load_dotenv()
 db = connector.connect(
@@ -33,14 +32,19 @@ def create_fields(resp: list[tuple], *keys) -> list[dict]:
 
 def create_time_restriction(current_restriction: str, times: list[str], name: str, field: str):
     if len(times) == 1:
-        return f"{current_restriction} AND {field} = {times[0]}", ""
+        new_restriction = f"{field} = {times[0]}"
     elif len(times) == 2:
-        return f"{current_restriction} AND {field} BETWEEN {times[0]} AND {times[1]}", ""
+        new_restriction = f"{field} BETWEEN {times[0]} AND {times[1]}"
     else:
         return current_restriction, f"Por favor, forneca apenas dois valores de {name} (inicio e fim do intervalo de interesse)."
 
+    if current_restriction:
+        return f"{current_restriction} AND {new_restriction}", ""
 
-@db_profile.route("/regiao", methods=["GET"])
+    return new_restriction, ""
+
+
+@get_profile.route("/regiao", methods=["GET"])
 def regiao():
     args = request.args
 
@@ -49,14 +53,18 @@ def regiao():
         restricao = f'Regiao.ID = "{args["id"]}"'
     elif "nome" in args:
         restricao = f'Regiao.nome = "{args["nome"]}"'
+    elif "tipo" in args:
+        restricao = f'Regiao.ID_TIPO_REGIAO = {args["tipo"]}'
 
     if restricao:
         regiao = run_sql(
             f"SELECT Regiao.ID, Regiao.nome, Regiao.tamanho, Regiao.artigo, Regiao.ID_REGIAO_PAI, TipoRegiao.nome, TipoRegiao.plural FROM Regiao INNER JOIN TipoRegiao ON TipoRegiao.ID = Regiao.ID_TIPO_REGIAO WHERE {restricao};"
         )
-        return create_fields(regiao, "id", "nome", "area (km2)", "artigo", "id_pai", "tipo", "plural_tipo")
     else:
-        return "Por favor, especifique um id ou um nome da região na URL."
+        regiao = run_sql(
+            "SELECT Regiao.ID, Regiao.nome, Regiao.tamanho, Regiao.artigo, Regiao.ID_REGIAO_PAI, TipoRegiao.nome, TipoRegiao.plural FROM Regiao INNER JOIN TipoRegiao ON TipoRegiao.ID = Regiao.ID_TIPO_REGIAO;"
+        )
+    return create_fields(regiao, "id", "nome", "area (km2)", "artigo", "id_pai", "tipo", "plural_tipo")
 
 
 def get_regions_information(kwargs):
@@ -84,14 +92,17 @@ def get_regions_information(kwargs):
     join_tipo = ""
     select_tipo = ""
     group_tipo = ""
-    if 'tabela_tipo' in kwargs and kwargs['tabela_tipo']:
-        join_tipo = f"INNER JOIN Tipo{kwargs['tabela']} ON {kwargs['tabela']}.ID_TIPO_{kwargs['tabela'].upper()} = Tipo{kwargs['tabela']}.ID"
-        select_tipo = f"Tipo{kwargs['tabela']}.ID, MIN(Tipo{kwargs['tabela']}.NOME),"
-        group_tipo = f", Tipo{kwargs['tabela']}.ID"
+    if "tabela_tipo" in kwargs and kwargs["tabela_tipo"]:
+        join_tipo = f"INNER JOIN {kwargs['tabela_tipo'][0]} ON {kwargs['tabela']}.{kwargs['tabela_tipo'][1]} = {kwargs['tabela_tipo'][0]}.ID"
+        if "media" in kwargs:
+            select_tipo = f"MIN({kwargs['tabela_tipo'][0]}.ID), {kwargs['tabela_tipo'][0]}.NOME,"
+        else:
+            select_tipo = f"{kwargs['tabela_tipo'][0]}.ID, {kwargs['tabela_tipo'][0]}.NOME,"
+        group_tipo = f", {kwargs['tabela_tipo'][0]}.NOME"
         campos.extend(["tipo", "nome_tipo"])
 
         if "tipos" in kwargs:
-            restricao += f"Tipo{kwargs['tabela']}.ID IN ({kwargs['tipos']})"
+            restricao += f"{kwargs['tabela_tipo'][0]}.ID IN ({kwargs['tipos']})"
 
     if "media" in kwargs:
         if kwargs["media"] == "ano" and "meses" not in kwargs:
@@ -137,7 +148,7 @@ def get_regions_information(kwargs):
     return create_fields(info, *campos)
 
 
-@db_profile.route("/populacao", methods=["GET"])
+@get_profile.route("/populacao", methods=["GET"])
 def populacao():
     info = {
         "tabela": "Populacao",
@@ -148,7 +159,7 @@ def populacao():
     return get_regions_information(info)
 
 
-@db_profile.route("/clima", methods=["GET"])
+@get_profile.route("/clima", methods=["GET"])
 def clima():
     info = {
         "tabela": "Clima",
@@ -166,7 +177,7 @@ def clima():
     return get_regions_information(info)
 
 
-@db_profile.route("/vegetacao", methods=["GET"])
+@get_profile.route("/vegetacao", methods=["GET"])
 def vegetacao():
     info = {
         "tabela": "Vegetacao",
@@ -182,15 +193,53 @@ def vegetacao():
     return get_regions_information(info)
 
 
-@db_profile.route("/impacto", methods=["GET"])
+@get_profile.route("/impacto", methods=["GET"])
 def impacto():
     info = {
         "tabela": "Impacto",
         "campos": {
             "VALOR": ["valor"],
         },
-        "tabela_tipo": True
+        "tabela_tipo": ("TipoImpacto", "ID_TIPO_IMPACTO"),
     }
     info.update(request.args)
 
     return get_regions_information(info)
+
+
+@get_profile.route("/emissao", methods=["GET"])
+def emissao():
+    info = {
+        "tabela": "Emissao",
+        "campos": {
+            "EMITIDO": ["emitido"],
+        },
+        "tabela_tipo": ("TipoEmissao", "ID_TIPO_IMPACTO"),
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
+
+
+@get_profile.route("/energia", methods=["GET"])
+def energia():
+    info = {
+        "tabela": "MatrizEnergetica",
+        "campos": {
+            "QTD_GERADO": ["gerado(MWh)"],
+        },
+        "tabela_tipo": ("TipoEnergia", "ID_TIPO_ENERGIA"),
+    }
+    info.update(request.args)
+
+    return get_regions_information(info)
+
+
+@get_profile.route("/editores", methods=["GET"])
+def editores():
+    if "regioes" in request.args:
+        editores = run_sql(f"SELECT * FROM Editor WHERE ID_REGIAO IN ({request.args['regioes']});")
+    else:
+        editores = run_sql("SELECT * FROM Editor;")
+
+    return create_fields(editores, "id", "nome", "formacao", "id_regiao")

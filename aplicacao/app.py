@@ -2,10 +2,10 @@ import os
 
 from flask import Flask
 
-from api import db_profile
+from api.api import api_profile
 
 app = Flask(__name__)
-app.register_blueprint(db_profile)
+app.register_blueprint(api_profile)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 3000))
