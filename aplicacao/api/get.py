@@ -1,33 +1,7 @@
-import os
-
-import mysql.connector as connector
-from dotenv import load_dotenv
+from .api import create_fields, run_sql
 from flask import Blueprint, request
 
 get_profile = Blueprint("get_profile", __name__, url_prefix="/get")
-
-load_dotenv()
-db = connector.connect(
-    host="localhost",
-    user=os.environ.get("MYSQL_USER"),
-    password=os.environ.get("MYSQL_PASSWORD"),
-    database=os.environ.get("MYSQL_DATABASE"),
-)
-
-
-def run_sql(sql: str) -> list[tuple]:
-    cursor = db.cursor()
-
-    cursor.execute(sql)
-    resp = cursor.fetchall()
-
-    cursor.close()
-
-    return resp
-
-
-def create_fields(resp: list[tuple], *keys) -> list[dict]:
-    return [{keyval[0]: keyval[1] for keyval in zip(keys, item)} for item in resp]
 
 
 def create_time_restriction(current_restriction: str, times: list[str], name: str, field: str):
@@ -243,3 +217,27 @@ def editores():
         editores = run_sql("SELECT * FROM Editor;")
 
     return create_fields(editores, "id", "nome", "formacao", "id_regiao")
+
+
+@get_profile.route("/tipoImpacto", methods=["GET"])
+def tipoImpacto():
+    tipos = run_sql("SELECT * FROM TipoImpacto")
+    return create_fields(tipos, "id", "nome", "descricao")
+
+
+@get_profile.route("/tipoEmissao", methods=["GET"])
+def tipoEmissao():
+    tipos = run_sql("SELECT * FROM TipoEmissao")
+    return create_fields(tipos, "id", "nome", "descricao", "nocividade")
+
+
+@get_profile.route("/tipoEnergia", methods=["GET"])
+def tipoEnergia():
+    tipos = run_sql("SELECT * FROM TipoEnergia")
+    return create_fields(tipos, "id", "nome", "descricao")
+
+
+@get_profile.route("/tipoRegiao", methods=["GET"])
+def tipoRegiao():
+    tipos = run_sql("SELECT * FROM TipoRegiao")
+    return create_fields(tipos, "id", "nome", "plural")
